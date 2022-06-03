@@ -28,11 +28,23 @@ svg.append("g")
     .style("text-anchor", "end");
 
 
-// Y axis, 
+// Y axis, number of times occured
 const y = d3.scaleLinear()
   .domain([0, 20000])
   .range([ height, 0]);
 svg.append("g")
   .call(d3.axisLeft(y));
+
+
+// Bars
+svg.selectAll("mybar")
+  .data(data)
+  .join("rect")
+    .attr("x", d => x(d.level_2)) // X axis, types of crime
+    .attr("y", d => y(d.value)) // Y axis, number of times crime occured
+    .attr("width", x.bandwidth())
+    .attr("height", d => height - y(d.value))
+    .attr("fill", "#69b3a2")
+  
 })
 
