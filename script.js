@@ -34,13 +34,6 @@ d3.csv("2020_crimes.csv").then(function (data) {
   const y = d3.scaleLinear().domain([0, 20000]).range([height, 0]);
   svg.append("g").call(d3.axisLeft(y));
 
-  // create a tooltip
-  // var tooltip = d3.select("body")
-  //     .append("div")
-  //     .style("position", "absolute")
-  //     .style("z-index", "10")
-  //     .style("visibility", "hidden")
-  //     .text("a simple tooltip");
   var tooltip = d3
     .select("body")
     .append("div")
@@ -67,7 +60,4 @@ d3.csv("2020_crimes.csv").then(function (data) {
     .on("mouseout", (d) => {
       tooltip.transition().duration(500).style("opacity", 0);
     });
-  // .on("mouseover", function(){tooltip.text(d.value); return tooltip.style("visibility", "visible");})
-  // .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
-  // .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 });
