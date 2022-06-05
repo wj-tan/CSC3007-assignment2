@@ -35,7 +35,8 @@ d3.csv("2020_crimes.csv").then(function (data) {
   // Y axis, number of times occured
   const y = d3.scaleLinear().domain([0, 20000]).range([height, 0]);
   svg
-    .append("g").call(d3.axisLeft(y))
+    .append("g")
+    .call(d3.axisLeft(y))
     .style("color", "white")
     .style("font-size", "15px");
 
@@ -55,7 +56,10 @@ d3.csv("2020_crimes.csv").then(function (data) {
   // Three function that change the tooltip when user hover / move / leave a cell
   var mouseover = function (d) {
     Tooltip.style("opacity", 1);
-    d3.select(this).style("stroke", "black").style("opacity", 1);
+    d3.select(this)
+      .style("stroke", "red")
+      .style("opacity", 1)
+      .style("stroke-width", 3);
   };
   var mousemove = function (d, i) {
     Tooltip.html("Total Crimes: " + i.value)
@@ -79,5 +83,5 @@ d3.csv("2020_crimes.csv").then(function (data) {
     .attr("fill", "#FFBF00")
     .on("mouseover", mouseover)
     .on("mousemove", mousemove)
-    .on("mouseleave", mouseleave)
+    .on("mouseleave", mouseleave);
 });
