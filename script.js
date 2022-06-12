@@ -41,17 +41,30 @@ d3.csv("2020_crimes.csv").then(function (data) {
     .style("font-size", "15px");
 
   // create a tooltip
-  var Tooltip = d3
-    .select("#my_dataviz")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
-    .style("position", "absolute")
-    .style("background-color", "white")
-    .style("border", "solid")
-    .style("border-width", "2px")
-    .style("border-radius", "5px")
-    .style("padding", "5px");
+  // var Tooltip = d3
+  //   .select("#my_dataviz")
+  //   .append("div")
+  //   .style("opacity", 0)
+  //   .attr("class", "tooltip")
+  //   .style("position", "absolute")
+  //   .style("background-color", "white")
+  //   .style("border", "solid")
+  //   .style("border-width", "2px")
+  //   .style("border-radius", "5px")
+  //   .style("padding", "5px");
+
+  var tip = d3
+    .tip()
+    .attr("class", "d3-tip")
+    .offset([-10, 0])
+    .html(function (d,i) {
+      return (
+        "<strong>" + i.level_2 + ": </strong>" + "<span style='color:red'>" +
+        i.value +
+        "</span>"
+      );
+    });
+  svg.call(tip);
 
   // Three function that change the tooltip when user hover / move / leave a cell
   var mouseover = function (d) {
@@ -62,9 +75,12 @@ d3.csv("2020_crimes.csv").then(function (data) {
       .style("stroke-width", 3);
   };
   var mousemove = function (d, i) {
+    var pos = d3.select(this).node().getBoundingClientRect(); // get moouse postion
     Tooltip.html("Total Crimes: " + i.value)
-      .style("left", d3.mouse(this)[0] + 70 + "px")
-      .style("top", d3.mouse(this)[1] + "px");
+      .style("left", `${window.pageXOffset + pos["x"] - 50}px`)
+      .style("right", `${window.pageyOffset + pos["x"] - 50}px`);
+    // .style("left", d3.mouse(this)[0] + 70 + "px")
+    // .style("top", d3.mouse(this)[1] + "px");
   };
   var mouseleave = function (d) {
     Tooltip.style("opacity", 0);
@@ -81,7 +97,9 @@ d3.csv("2020_crimes.csv").then(function (data) {
     .attr("width", x.bandwidth())
     .attr("height", (d) => height - y(d.value))
     .attr("fill", "#FFBF00")
-    .on("mouseover", mouseover)
-    .on("mousemove", mousemove)
-    .on("mouseleave", mouseleave);
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide)
+    // .on("mouseover", mouseover)
+    // .on("mousemove", mousemove)
+    // .on("mouseleave", mouseleave);
 });
